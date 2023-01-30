@@ -1,0 +1,101 @@
+@charset "UTF-8";
+
+main > .detail-pay-wrap {
+    width: 870px;
+    margin-left: 20px;
+    margin: 0 auto;
+
+}
+
+main > .detail-pay-wrap .detail-pay-name {
+    border: 1px solid #eee;
+    width: 400px;
+}
+
+main > .detail-pay-wrap .detail-pay-name tr td {
+    border: 1px solid #999;
+    padding: 5px;
+}
+
+main > .detail-pay-wrap .detail-pay-name tr .detail-pay-td1 {
+    background-color: #3e782c;
+    width: 100px;
+    color: #fff;
+    text-align: center;
+}
+
+main > .detail-pay-wrap .detail-pay-name tr .tdwidth {
+    width: 100px;
+}
+
+main > .detail-pay-wrap .pay-logo {
+    width: 450px;
+}
+
+main > .detail-pay-wrap .pay-logo .pay-logoimg {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+main > .detail-pay-wrap .pay-logo .pay-logoimg p {
+    text-align: center;
+    white-space: nowrap;
+}
+
+main > .detail-pay-wrap .pay-logo img {
+    width: 100%;
+    height: 100%;
+}
+
+main .pay-day-wrap {
+    width: 100%;
+    margin-top: 30px;
+}
+
+main .pay-day-wrap .pay-day {
+    width: 100%;
+    border: 1px solid red;
+}
+
+main .pay-day-wrap .pay-day tr td {
+    border: 1px solid #999;
+    width: 100px;
+    padding: 5px;
+}
+
+main .pay-day-wrap .pay-day tr .pay-day-color {
+    background-color: #3e782c;
+    color: #fff;
+    text-align: center;
+}
+
+main .pay-day-wrap .pay-day tr .pay-day-center {
+    text-align: center;
+}
+
+main .pay-wrap {
+    width: 100%;
+    margin-top: 30px;
+}
+
+main .pay-wrap .pay {
+    width: 100%;
+}
+
+main .pay-wrap .pay tr td {
+    border:1px solid #999;
+    text-align: center;
+    padding: 5px;
+    width: 100px;
+}
+
+main .pay-wrap .pay .pay-tr-right td {
+    text-align: right;
+}
+
+main .pay-wrap .pay tr .pay-color {
+    background-color: #3e782c;
+    color: #fff;
+}
+

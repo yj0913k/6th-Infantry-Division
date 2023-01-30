@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+
+    <!-- Styles  -->
+    <link rel="stylesheet" href="/css/attendance/my-attendance.css"><!-- my-attendance css링크 -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+
+
+
+        /////////////////////////근무시간 스크립트 시작////////////////////////////////////
+
+
+
+        /////////////////////////근무시간 스크립트 끝////////////////////////////////////
+    </script>
+
+</head>
+<body>
+<main>
+    <input class="employeeNo" type="text" name="eno">
+    <div class="wrap-table">
+        <div class="wrap-attendance" >
+            <!-- <div class="date-box">
+                    아래시간 출근시간이 찍혀요
+                    <span>2023-01-03 08:48</span>
+                 </div> -->
+            <ul class="flex">
+                <li th:fragment="Attendance">
+                    <!-- 왼쪽 박스 -->
+                    <div class="wrap-attendance-info flex between">
+                        <form action="/attendance/my-attendance" method="post">
+                            <input type="hidden" class="no" name="mno" th:value="${#authentication.principal.mno}">
+                            <div>
+                            </div>
+                            <script type="text/javascript">
+                                $(function(){
+                                    var start=$("#beforeWork").text();//출근시간
+                                    var findatten = $('.leaveTime').text();//퇴근시간
+
+                                    if(findatten=="--"){//퇴근시간이 없을때
+                                        spritString(start);//시작하자마자 바로 작동(1초 늘려줌)
+                                        setTimeout(function run2() { spritString(start); setTimeout(run2, 0); }, 1000);//1초마다 반복
+                                    }
+
+
+                                });
+
+                                function spritString(stringTeme){
+                                    var now=new Date();
+                                    var workEnd = 00;
+                                    var time=[];
+                                    var strs=stringTeme.split(":");
+                                    hour2=strs[0].substring(strs[0].length-2,strs[0].length);
+                                    minute2=strs[1]
+                                    seconds2=strs[2];
+
+                                    time[0]=now.getHours()-hour2;
+                                    time[1]=now.getMinutes()-minute2;
+                                    if(time[1]<0){time[1]=60+time[1]; time[0]--;}
+                                    time[2]=now. getSeconds()-seconds2;
+                                    if(time[2]<0){time[2]=60+time[2]; time[1]--;}
+                                    console.log();
+                                    $("#working-time").text(time[0]+"시간"+ time[1]+"분"+ time[2]+"초");
+                                    return time[0]+"시간"+ time[1]+"분"+ time[2]+"초";
+
+                                }
+                                function startwork(){
+                                    var attDate = $('.att').val();
+                                    var today = new Date();
+                                    var today2 = new Date(attDate);
+
+
+
+                                    var year = today.getFullYear(); // 년도
+                                    var month = today.getMonth() + 1; // 월
+                                    var date = today.getDate(); // 날짜
+                                    var day = today.getDay(); // 요일
+
+                                    var todaywork = year + '-' + month + '-' + date;
+
+                                    var year2 = today2.getFullYear(); // 년도
+                                    var month2 = today2.getMonth() + 1; // 월
+                                    var date2 = today2.getDate(); // 날짜
+                                    var day2 = today2.getDay(); // 요일
+
+                                    var todaywork2 = year2 + '-' + month2 + '-' + date2;
+
+                                    var leaveWork = $('.leaveTime').text();
+                                    if(leaveWork=="--"){
+                                        alert("이미 출근처리가 되어있습니다.");
+
+                                    }
+                                    else if(todaywork2==todaywork){
+                                        alert("오늘의 출퇴근 기록이 이미 존재합니다.")
+                                    }else{
+                                        alert("정상적으로 출근처리 되었습니다.");
+                                    }
+                                }
+
+                            </script>
+                            <div class="attendance-info01">
+                                <input type="hidden" th:if="${result != null}" th:value="${result.attDate}" class="att">
+                                <span>오늘의 출근시각</span>
+                                <!-- <p>2023-01-03 08:48</p> -->
+                                <p id="goToWork"></p>
+                                <p th:if="${result != null}" th:text="${result.goWorkTime}" id="beforeWork"></p>
+                                <!--/* <p     th:if="${result.leaveWorkTime!=''}" th:value="${result.no}" th:text="${result.leaveWorkTime}">근무시간</p>
+                       <span   th:if="${result.leaveWorkTime==''}" th:value="${.no}" >세분류 없음</span> */-->
+                                <div class="wrap-attendance-btn btnBox">
+                                    <button onclick="startwork()">출근</button>
+
+                                    <!-- 출근버튼 -->
+                                </div>
+                            </div>
+                        </form>
+                        <form action = "/attendance/leave" method="post">
+                            <input type="hidden" class="no" name="mno" th:value="${#authentication.principal.mno}">
+                            <div class="attendance-info02">
+                                <span> 마지막 퇴근시각</span>
+                                <p id="goToWork"></p>
+                                <span th:if ="${result != null}" th:text ="${result.leaveWorkTime}" class="leaveTime"> </span>
+                                <div class="wrap-attendance-btn btnBox">
+                                    <button id="endwork" onclick="endWork()">퇴근</button>
+                                    <!-- 퇴근버튼 -->
+                                </div>
+                            </div>
+                        </form>
+                    </div> <!-- <div class="wrap-attendance-btn">
+                             <button>출근</button>
+                             <button>퇴근</button>
+                          </div> -->
+                    <p th:if="${result!=null}" class="status" th:text="${result.status}" ></p>
+                </li>
+                <li>
+                    <input type="hidden" th:if="${result != null}" th:value="${result.goWorkTime}" id="work-timer" class="clock">
+
+                    <!-- 오른쪽 박스 -->
+                    <div class="text-box flex start">
+                        <span>남은휴가</span><span th:if = "${result !=null}" th:text = "${result.employee.rank.annualDay}"></span>
+                    </div>
+                    <div class="text-box flex start">
+                        <span>금일 당직근무</span><span th:if ="${result !=null}" th:text ="${result.watchDuty}" ></span>
+                    </div>
+                    <div class="text-box flex start">
+                        <span>초과근무시간</span><span th:if ="${result != null}" th:text ="${result.overTime}" ></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="work-timer">
+
+        </div>
+        <div class="wrap-attendance02">
+            <h2>나의 출근기록</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th style="width: 100px;">이름</th>
+                    <th style="width: 100px;">날짜</th>
+                    <th style="width: 200px;">출근시간</th>
+                    <th style="width: 200px;">퇴근시간</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="list : ${list}">
+                    <td>[[${list.name}]]</td>
+                    <td th:text="${list.attDate}">2023-01-03</td>
+                    <td th:text="${list.goWorkTime}"></td>
+                    <td th:text="${list.leaveWorkTime}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<title>Insert title here</title>
+    <!-- Styles  -->
+
+    
+
+<!-- ---------------------------------------------캘린더 링크 끝------------------------------------- -->
+    
+
+<!-- -------------------------------------캘린더 자바스크립트------------------------------------------ -->
+
+</head>
+<body>
+
+<main>
+<div th:fragment="GetCalendar">
+
+ 
+<link rel="stylesheet" href="/css/attendance/attendance.css"><!-- ---------------------------attendance css링크------------------------- -->
+    
+<!-- Bootstrap core CSS --> <!--캘린더모달창을 사용하기 위한 추가  -->
+<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap core JavaScript -->  <!--캘린더 모달창을 사용하기 위한 추가  -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+   
+<!-- ---------------------------------------------캘린더 링크------------------------------------- -->
+
+  <!-- 화면 해상도에 따라 글자 크기 대응(모바일 대응) -->
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <!-- jquery CDN -->
+  <!-- fullcalendar CDN -->
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
+  <!-- fullcalendar 언어 CDN -->
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
+<style>
+  html, body {
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 14px;
+  }
+  /* 캘린더 위의 해더 스타일(날짜가 있는 부분) */
+  .fc-header-toolbar {
+    padding-top: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+  
+  .fc-event-time{
+	display:none;  
+  }
+  
+ .close:not(:disabled):not(.disabled):hover {
+   opacity: 100%;
+}
+
+.close{
+font-weight:normal;
+text-shadow:none;
+}
+</style>
+
+<script type="text/javascript">
+	
+	var no = $("#no").val();
+	var employeeName;
+	var employeeNo;
+	var period;
+	var workStatus;
+	var color;
+	var id;
+	
+	(function(){ $(function(){// 즉시실행함수
+		
+	      // calendar element 취득
+	      var calendarEl = $('#calendar')[0];
+	      // full-calendar 생성하기
+	        calendar = new FullCalendar.Calendar(calendarEl, {
+	        height: '900px', // calendar 높이 설정
+	        expandRows: true, // 화면에 맞게 높이 재설정
+	        slotMinTime: '08:00', // Day 캘린더에서 시작 시간
+	        slotMaxTime: '20:00', // Day 캘린더에서 종료 시간
+	        // 해더에 표시할 툴바
+	        headerToolbar: {
+	          left: 'prev,next today',
+	          center: 'title' ,
+	          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+	        },
+
+	        initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
+	       // showNonCurrentDates:false,
+	        contentHeight:"auto",
+	        handleWindowResize:true,
+	        
+	        navLinks: true, // 날짜를 선택하면 Day 캘린더나 Week 캘린더로 링크
+	        editable: true, // 수정 가능?
+	        selectable: true, // 달력 일자 드래그 설정가능
+	        nowIndicator: true, // 현재 시간 마크
+	        dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
+	        locale: 'ko', // 한국어 설정
+	        eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
+	          console.log(obj);
+	        },
+	        eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트
+	          console.log(obj);
+	        },
+	        eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트
+	          console.log(obj);
+	        },
+	        
+	        eventClick: function (info){
+                if(confirm("'"+ info.event.title +"' 매니저의 일정을 삭제하시겠습니까 ?")){
+                    // 확인 클릭 시
+                    info.event.remove();
+                }
+
+             	var DeleteCalenderData = { //여기서부터는 DB에 보내줄 JSON 데이터를 구성하는중
+             			
+             			title : info.event.title,
+        				start : info.event.start,
+        				end : info.event.end
+        			} 
+        			 console.log(DeleteCalenderData); 
+                
+             	
+                $(function deleteData(){
+                    $.ajax({
+                        url: "/full-calendar/calendar-admin-delete",
+                        method: "DELETE",
+                        dataType: "json",
+                        data: JSON.stringify(DeleteCalenderData),
+                        contentType: 'application/json',
+                    })
+                })
+            },
+            
+	        
+	        
+	        select: function(arg) { // 캘린더에서 날짜를 드래그로 선택할 때, 이벤트를 생성할 수 있다.
+	         // var title = prompt('Event Title:');
+	          var modal = $('.modal');
+	          modal.modal('show');
+				//댓글 입력하는 부분 초기화 시키기
+				// 	$('input[name="grade"]').val('');
+				//	$('input[name="mno"]').val(''); 
+
+				$(".modal-footer .btn").hide(); //모달 내의 모든 버튼을 안 보이도록
+				$(".replySave, .replyClose").show(); //필요한 버튼들만 보이도록
+				period=arg;
+	        }
+	        
+	        
+	        // 이벤트 
+	        //,events: data
+	        	
+	      });
+	      
+	      loadDataOnCalendar(calendar); //DB에서 캘린더 데이터들을 가져와서 달력에 표시해주는 함수
+		
+		
+	      $(".replySave").click(function() {
+	    	  
+	    	  
+	    	  
+	  		if(workStatus=="당직"){
+				color='green'
+			}
+			else if(workStatus=="병가"){
+				color='brown'
+			}
+			else if(workStatus=="휴가"){
+				color='gray'
+			}
+	  		
+	          if (employeeNo) { //캘린더 화면에 띄워주는코드
+	            calendar.addEvent({
+	              title:"["+workStatus+"]"+ employeeName,
+	              start: period.start,
+	              end: period.end,
+	              color: color,
+	              display: 'block',
+	            
+	            })
+	          }
+	          calendar.unselect()
+	          
+	         console.log("DB에 넣기 직전의 period.start" + period.start);
+	          	var regCalenderData = { //여기서부터는 DB에 보내줄 JSON 데이터를 구성하는중
+				employeeNo : employeeNo,
+				startDate : period.start,
+				endDate : period.end,
+				workStatus: workStatus
+			} 
+			 console.log(regCalenderData); 
+
+			 $.ajax({ // 여기서 JSON 데이터를 컨트롤러로 보내주고, 컨트롤러에서는 DB에 저장을 할 것
+						url : '/attendance/registerCalender',
+						method : 'post',
+						data : JSON.stringify(regCalenderData),
+						contentType : 'application/json; charset=utf-8',
+						dataType : 'json',
+						success : function(result) {
+							var newCno = parseInt(result);
+							/* alert(newCno+ "번 일정이 등록되었습니다."); */
+							modal.modal('hide');
+						}
+					}) 
+			
+			 calendar.render();
+		});
+	      
+	      
+	     
+	      // 캘린더 랜더링
+	      calendar.render();
+	    });
+	  })();
+	
+           /////////////////////////////////////캘린더 자바스크립트 끝///////////////////////////////////////////   
+           
+            //////////////////////////////테이블에서 체크박스 선택 제이쿼리/////////////////////////////////////////
+		   $("#cbx_chkAll").click(function() {
+			if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
+			else $("input[name=chk]").prop("checked", false);
+		});
+		
+		$("input[name=chk]").click(function() {
+			var total = $("input[name=chk]").length;
+			var checked = $("input[name=chk]:checked").length;
+		
+			if(total != checked) $("#cbx_chkAll").prop("checked", false);
+			else $("#cbx_chkAll").prop("checked", true); 
+		});
+			//////////////////////////////테이블에서 체크박스 선택 제이쿼리 끝/////////////////////////////////////////
+		
+			
+			 function loadDataOnCalendar(calendar){
+	        	var url = "/full-calendar/calendar-admin";
+	        	$.ajax({
+	        		type:'GET',
+	        		cache:false,
+	        		url: url,
+	        		dataType:'json',
+	        		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+	        		success: function(data){
+	        			var events = [];
+	        			//console.log(data[0]);
+	        			//alert(data[0].start);
+
+	        			for(let i=0;i<data.length;i++){
+	        				
+	        				if(data[i].workStatus=="당직"){
+	        					color='green'
+	        				}
+	        				else if(data[i].workStatus=="병가"){
+	        					color='brown'
+	        				}
+	        				else if(data[i].workStatus=="휴가"){
+	        					color='gray'
+	        				}
+	        				
+	        				
+	        				console.log("DB에서 가져온 Data.start" + data[i].start);
+		        			calendar.addEvent({
+		        				title:"["+data[i].workStatus+"]"+ data[i].title,
+		        				start:data[i].start,
+		        				end: data[i].end,
+		        				color: color,
+		        				display: 'block',
+		        			});
+	        			}
+	        		
+	        			 calendar.render();
+	        		}
+	        	})
+	        };
+		
+		function ModalGroupSelect(){  
+			var GroupSelect2 = document.getElementById("selectBox2");  
+			  
+			// select element에서 선택된 option의 value가 저장된다.  
+			var selectValue = GroupSelect2.options[GroupSelect2.selectedIndex].value;  
+			  
+			$.ajax({
+				url:`/attendance/ModalGroup/${selectValue}`,
+					success:function(result){ 	/*attendance/ModalSelectGroup.html의 코드를 가져온다.  */
+						$("#employeeSelectBox").html(result);
+					}
+			});
+		}  
+		
+		
+		
+		function ModalEmployeeSelect(){  //셀렉트 박스에서 부대원이름을 선택함.
+			var EmployeeSelect = document.getElementById("selectBox3");  
+			  
+			// select element에서 선택된 option의 value가 저장된다.  
+			employeeNo = EmployeeSelect.options[EmployeeSelect.selectedIndex].value;  
+			employeeName = EmployeeSelect.options[EmployeeSelect.selectedIndex].text;  
+			  
+		 }  
+		
+		function ModalStatusSelect(){  //셀렉트 박스에서 부대원이름을 선택함.
+			var StatusSelect = document.getElementById("selectBox4");  
+			  
+			// select element에서 선택된 option의 value가 저장된다.  
+			workStatus = StatusSelect.options[StatusSelect.selectedIndex].value;  
+			  
+		 }  
+		
+		
+		function chageGroupSelect(){  
+			var GroupSelect = document.getElementById("selectBox1");  
+			  
+			// select element에서 선택된 option의 value가 저장된다.  
+			var selectValue = GroupSelect.options[GroupSelect.selectedIndex].value;  
+			  
+			  
+			$.ajax({
+				url:`/attendance/group/${selectValue}`,
+				success:function(result){
+					$("tbody.tableResult").html(result);
+				//location.href=`/attendance/group/${selectValue}`;
+				}
+			});
+		}
+</script>
+
+	<div id='calendar-container'>
+	  <div id='calendar'></div>
+	</div>
+	<!-- --------------------------------캘린더 HTML코드 끝---------------------------------- -->
+	
+	<!-- 캘린더 클릭시 띄워줄 모달 창  -->
+	<div class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">부대원 근태 지정</h5>
+	
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<!-- <label>회원번호</label>  -->
+					</div>
+					
+					<!-- <div class="form-group">
+						<label>부대원 이름</label> <input class="form-control" type="text"
+							name="employeeName" placeholder="employeeName">
+					</div> -->
+					
+					<div class="form-group">
+					<select id="selectBox2"  onchange="ModalGroupSelect()">  
+						<option value="" selected disabled>부대 선택</option>  
+						<option th:each = "dto : ${departmentList}" th:value = "${dto.no}" th:text="${dto.name}">셀렉트박스</option>
+					</select>
+					 
+					<span id="employeeSelectBox"> <!--selectBox2에서 선택한 부대에 소속된 employeeList를 출력해줌! ModalSelectGroup.html 참고! -->
+					</span>
+					
+					
+					<select id="selectBox4"  onchange="ModalStatusSelect()">  
+						<option value="" selected disabled>일정 선택</option>  
+						<option th:value = "당직" th:text="당직">셀렉트박스</option>
+						<option th:value = "휴가" th:text="휴가">셀렉트박스</option>
+						<option th:value = "병가" th:text="병가">셀렉트박스</option>
+					</select>
+					
+					
+					</div>
+					
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger replyRemove">Remove</button>
+					<button type="button" class="btn btn-warning replyModify">Modify</button>
+					<button type="button" class="btn btn-primary replySave">Save</button>
+					<button type="button"
+						class="btn btn-outline-secondary replyClose"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script>  //셀렉트 박스에 사용되는 스크립트
+
+
+</script> 
+
+		<!-- --------------------------------테이블(리스트로 뿌려주면 보여지는 페이지) HTML코드---------------------------------- -->
+		<div class="wrap-table">
+			<form action="">
+				<div class="wrap-btn">
+					<!-- <button>신규</button>
+					<button>저장</button>
+					<button>취소</button>
+					<button>삭제</button> -->
+					<select id="selectBox1" name="lang" onchange="chageGroupSelect()">  
+						<option value="" selected disabled>조회할 소속부대</option>  
+						<option th:each = "dto : ${departmentList}" th:value = "${dto.no}" th:text="${dto.name}">조회할 조직 셀렉트박스</option>
+					</select> 
+				</div>
+				
+				<table>
+					<thead>
+						<tr>
+							<!--/* <th style="width: 50px;"><input type="checkbox"
+								id="cbx_chkAll"></th> */-->
+							<!-- 테이블 체크박스 -->
+							<th style="width: 100px;">대대</th>
+							<th style="width: 100px;">이름</th>
+							<th style="width: 100px;">날짜</th>
+							<th style="width: 120px;">출근현황</th>
+							<th style="width: 160px;">출근시각</th>
+							<th style="width: 160px;">퇴근시각</th>
+							<th style="width: 160px;">초과근무시간</th>
+							<th style="width: 80px;">당직근무</th>
+						</tr>
+					</thead>
+					<tbody class="tableResult"> <!-- 대대 선택시, tbody 안에 html 코드들은 selectGroup.html 페이지의 코드로 덮어씌워짐. -->
+					<tr th:each="dto:${Attendancelist}"> 
+				 	<!--/* 	<td><input th:type="checkbox" th:name="chk"></td>  */-->
+						<td th:if="${dto.employee.department.name !=null}" th:text = "${dto.employee.department.parent.parent.parent.name}">--</td>
+						<td th:text = "${dto.employee.name}">이름</td>
+						<td th:text = "${dto.attDate}">날짜</td> <!--  -->
+						<td th:text = "${dto.status}">출근? 휴근?</td>
+						<td th:text = "${dto.goWorkTime}">출근시간</td> <!--  -->						
+						<td th:text = "${dto.leaveWorkTime}">퇴근시간</td> <!--  -->					
+						<td th:text = "${dto.overTime}">초과근무시간</td>
+						<td th:text = "${dto.watchDuty}">당직유무</td> 
+					 </tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+		<!-- --------------------------------테이블(리스트로 뿌려주면 보여지는 페이지) HTML코드 끝---------------------------------- -->
+
+
+		<!-- Link JS -->
+		<!-- <script src="assets/js/main.js"></script> -->
+
+	</main>
+</body>
+</html>

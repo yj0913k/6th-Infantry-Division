@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/document/document-process.css">
+</head>
+<body>
+	<main>
+		<div class="process-wrap">
+			<h2>결재진행현황</h2>
+			<form>
+				<table class="process">
+					<tr>
+						<td>순번</td>
+						<td>결제자</td>
+						<td class="process-wid">문서이름</td>
+						<td>결재현황</td>
+						<td>배정일시</td>
+						<td>결제일시</td>
+						<td>상세</td>
+					</tr>
+					<tr th:each = "list : ${stand}">
+						<td th:text="${list.no}"> 1</td>
+						<td th:text="${list.name}">홍길동</td>
+						<td th:text="${list.title}"></td>
+						<td th:text="${list.status}" >승인</td>
+						<td th:text="${list.docCreatedDate}">2023-01-05</td>
+						<td> 업데이트 2023-01-05</td>
+						<td ><button type="button">
+							<a th:href="|/document/process/detail/${list.no}|" >상세</a>
+						</button
+								></td>
+					</tr>
+
+				</table>
+			</form>
+		</div>
+	</main>
+</body>
+</html>

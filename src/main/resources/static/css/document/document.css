@@ -1,0 +1,95 @@
+@charset "UTF-8";
+main .document-wrap{
+	margin-left: 20px;
+	width: 1000px;
+	margin: 0 auto;
+}
+main .document-wrap .input50{
+	width:30%;
+}
+main .document-wrap .table-col{
+	background-color: #3e782c;
+	color: #fff;
+}
+main .document-wrap h2{
+	font-size: 20px;
+	text-align: center;
+	margin-bottom: 20px;
+}
+main .document-wrap table input{
+	border:1px solid #999;
+	width: 100%;
+	vertical-align: middle;
+}
+main .document-wrap table textarea{
+	border:1px solid #999;
+	width: 100%;
+	vertical-align: middle;
+	height: 100%;
+}
+main .document-header{
+	width:1000px;
+	
+}
+main .document-header tr td{
+	border:1px solid #999;
+	padding:5px;
+}
+main .document-header tr .document-header-wid{
+	width:200px;
+}
+main .document-body{
+	width:1000px;
+	margin-top:20px;
+	
+}
+main .document-body tr td{
+	border:1px solid #999;
+	padding:5px;
+}
+main .document-body tr .document-body-wid{
+	width:200px;
+}
+main .document-wrap .btn-approval-wrap{
+	margin:10px 0 0 800px;
+	display: flex;
+}
+main .document-wrap button{
+	transition: all .2s ease;
+}
+main .document-wrap button:hover{
+	background-color:#3e782c;
+	color: #fff;
+	 
+}
+main .document-wrap .btn-approval{
+	border:1px solid #3e782c;
+	background-color:#fff;
+	padding: 5px;
+	border-radius: 5px;
+	width: 200px;
+	cursor: pointer;
+	display: inline-block;
+}
+main .document-wrap .btn-ok{
+	border:1px solid #3e782c;
+	background-color:#fff;
+	padding: 5px;
+	border-radius: 5px;
+	width: 100px;
+	cursor: pointer;
+	display: inline-block;
+}
+main .document-wrap .btn-cencle{
+	border:1px solid #3e782c;
+	background-color:#fff;
+	padding: 5px;
+	border-radius: 5px;
+	width: 100px;
+	cursor: pointer;
+	display: inline-block;
+	margin-left: 10px;
+}
+main .document-wrap .document-table-wrap-adit{
+	display:none;
+}

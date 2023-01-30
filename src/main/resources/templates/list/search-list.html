@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<div class="board_list_wrap">
+    <div class="board_list" >
+        <div class="top">
+            <div class="num">번호</div>
+            <div class="title">제목</div>
+            <div class="writer">글쓴이</div>
+            <div class="date">작성일</div>
+            <div class="count">조회</div>
+        </div>
+        <div  id="search-div">
+        <th:block th:each="list:${list}">
+            <div class="num" th:text="${list.no}">5</div>
+            <div class="title"  >
+                <a th:href="|/detail/${list.no}|" th:text="${list.title}">글 제목이 들어갑니다.</a>
+            </div>
+            <div class="writer" th:text="${list.writer}">김이름</div>
+            <div class="date" th:text="${#temporals.format(list.createdDate, 'yyyy-MM-dd')}">[[${list.createdDate}]]</div>
+            <div class="count" th:text="${list.count}">33</div>
+        </th:block>
+        </div>
+    </div>
+    <div class="board_page" th:if="${pageinfo}">
+		<th:block th:if="${1 lt pageinfo.start}">
+      	<span >
+            <a th:onclick="|getListAll(${1})|" th:text="'처음'" class="bt first"></a>
+        </span>
+        <span >
+            <a th:onclick="|getListAll(${pageinfo.start-1})|" th:text="'이전'" class="bt prev"></a>
+        </span>
+        </th:block>
+
+        <!-- 시퀀스 보여주는 값을 변경. -->
+        <span th:each="pageNum : ${#numbers.sequence(pageinfo.start, pageinfo.end)}">
+            <a class="num" th:onclick="|getListAll(${pageNum})|" th:text="|${pageNum}|"></a>
+       </span>
+
+		<th:block th:if="${pageinfo.pageTotal gt pageinfo.end}">
+        <span>
+             <a th:onclick="|getListAll(${pageinfo.end+1})|" th:text="'다음'" class="bt next"></a>
+         </span>
+        <span >
+            <a th:onclick="|getListAll(${pageinfo.pageTotal})|" th:text="|끝|" class="bt last"></a>
+    `   </span>
+    	</th:block>
+    </div>
+
+
+</div>
+</html>

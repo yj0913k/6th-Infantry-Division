@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/organization/orgMemberList.css"/>
+</head>
+<main>
+    <section id="memberSearch">
+        <h2>조직도 구성원</h2>
+    </section>
+
+
+    <div class="flex row-reverse end category-path" th:if="${cates}">
+         <span th:each="cate:${cates}" th:class="${'cate-name ca-'+cate.depth}">
+            <a th:href="|/common/category/${cate.no}/goods|" th:text="${cate.name}">카테고리이름</a>
+            <span class="seperator" th:unless="${cateStat.first}">&gt;</span>
+         </span>
+        <!-- 조직도 조회페이지에서 부대원들을 보여줄 떄, 상위 탭에서 HOME> 대대> 중대 > 소대> 분대를 보여주기 위한 함수. -->
+        <span>
+            <a href="/" >HOME</a>
+            <span class="seperator">&gt;</span>
+         </span>
+    </div>
+
+
+    <section id="Employeelist">
+        <table>
+            <thead>
+            <tr>
+                <th>군번</th>
+                <th>성명</th>
+                <th>계급</th>
+                <th>소속</th>
+                <th>입대일</th>
+                <th>핸드폰</th>
+                <th>E-mail</th>
+                <th>주소</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <!--         <tr th:each="dto : ${list}" >-->
+                <!--                <td th:text="">군번</td>-->
+                <!--                <td th:text="">성명</td>-->
+                <!--                <td th:text="">계급</td>-->
+                <!--                <td th:text="">소속</td>-->
+                <!--                <td th:text="">입대일</td>-->
+                <!--                <td th:text="">핸드폰</td>-->
+                <!--                <td th:text="">E-mail</td>-->
+                <!--                <td th:text="">주소</td>-->
+                <td>군번</td>
+                <td>성명</td>
+                <td>계급</td>
+                <td>소속</td>
+                <td>입대일</td>
+                <td>핸드폰</td>
+                <td>E-mail</td>
+                <td>주소</td>
+            </tr>
+            <tr th:each="dto : ${DepartmentViewlist}" >
+                <td th:text="${dto.number}">군번</td>
+                <td th:text="${dto.name}">성명</td>
+                <td th:text="${dto.rankPosition}">계급</td>
+                <td>
+                    <a th:href="|/common/category/${dto.department.parent.parent.parent.no}/goods|">[[${dto.department.parent.parent.parent.name}]] </a> 
+                    <span th:if="${dto.department.parent.parent.name!=''}">></span>
+                    
+                    <a th:href="|/common/category/${dto.department.parent.parent.no}/goods|">[[${dto.department.parent.parent.name}]]</a> 
+                   <span th:if="${dto.department.parent.name!=''}">></span>
+                    
+                    <a th:href="|/common/category/${dto.department.parent.no}/goods|">[[${dto.department.parent.name}]]</a> 
+                     <span th:if="${dto.department.name!=''}">></span>
+                     
+                    <a th:href="|/common/category/${dto.department.no}/goods|">[[${dto.department.name}]]</a>
+                </td>
+                <td th:text="${dto.joinDate}">입대일</td>
+                <td th:text="${dto.phone}">핸드폰</td>
+                <td th:text="${dto.email}">E-mail</td>
+                <td th:text="${dto.address.roadAddress}">주소</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</html>

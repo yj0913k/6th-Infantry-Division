@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/member/memberList.css"/>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</head>
+<main>
+    <section id="memberSearch">
+        <h2>인사기록카드</h2>
+        <div class="container">
+            <form class="form-inline d-flex" method="GET" action="/member/list">
+                <div class="flex form-group">
+                    <div>
+                        <lable for="searchName" class="sr-only">성명</lable>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" id="searchName" name="searchName"
+                               th:value="${param.searchName}">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">검색하기</button>
+                </div>
+            </form>
+
+            <!--        <form action="search-form" autocomplete="off">-->
+            <!--            <select name="type">-->
+            <!--                <option value="">검색 분류 선택</option>-->
+            <!--                <option value="성명">성명</option>-->
+            <!--                <optgroup label="군번">-->
+            <!--                    <option value="간부">간부</option>-->
+            <!--                    <option value="병사">병사</option>-->
+            <!--                </optgroup>-->
+            <!--            </select>-->
+            <!--            <input type="text" name="keyword" value="">-->
+            <!--            <input type="button" onclick="getSearchList()" class="btn btn-outline-primary" value="검색">-->
+            <!--        </form>-->
+            <!--        <div style="flex: 0.6;"></div> 추후에 다시 도전해보기. -->
+        </div>
+    </section>
+    <section id="list">
+        <div class="container">
+            <table id="table" class="table table-horizontal">
+                <div>총 건수 :
+                    <div th:text="${paging.totalElements}"></div>
+                </div>
+                <div id="posts_list">
+                    <thead id="thead">
+                    <tr>
+                        <th>군번</th>
+                        <th>성명</th>
+                        <th>계급</th>
+                        <th>소속</th>
+                        <th>입대일</th>
+                        <th>핸드폰</th>
+                        <th>E-mail</th>
+                        <th>생일</th>
+                    </tr>
+                    </thead>
+                    <th:block th:each="dto : ${paging}">
+                        <tbody id="tbody">
+                        <tr>
+                            <td th:text="${dto.number}">군번</td>
+                            <td th:text="${dto.name}">성명</td>
+                            <td th:text="${dto.rank}">계급</td>
+                            <td class="flex">
+                                <div th:text="${dto.department.parent.parent.parent.name}"></div>
+                                >
+                                <div th:text="${dto.department.parent.parent.name}"></div>
+                                >
+                                <div th:text="${dto.department.parent.name}"></div>
+                                >
+                                <div th:text="${dto.department.name}"></div>
+                            </td>
+                            <td th:text="${dto.joinDate}">입대일</td>
+                            <td th:text="${dto.phone}">핸드폰</td>
+                            <td th:text="${dto.email}">E-mail</td>
+                            <td th:text="${dto.birth}">생일</td>
+                        </tr>
+                        </tbody>
+                    </th:block>
+                </div>
+            </table>
+        </div>
+        <!--  //////////////////////////////미완성//////////////////////      <div>-->
+        <!--            <div class="flex" id="paging">-->
+        <!--                &lt;!&ndash;                //첫번째 페이지 나오나 테스트&ndash;&gt;-->
+        <!--                &lt;!&ndash;                <span th:text="${startPage}" th:if="${!#strings.isEmpty(startPage)}" class="first"></span> '&ndash;&gt;-->
+        <!--                &lt;!&ndash;                <span th:text="${paging}" th:if="${!#strings.isEmpty(paging)}"></span>&ndash;&gt;-->
+        <!--                <nav aria-label="Page navigation example">-->
+        <!--                    <ul class="pagination justify-content-center flex">-->
+        <!--                        <li class="page-item" th:classappend="${1 == paging.pageable.pageNumber +1 } ? 'disabled'">-->
+        <!--                            <a class="page-link"-->
+        <!--                               th:href="@{/member/list(page=${paging.pageable.pageNumber - 1 }, searchText=${param.searchText})}">이전</a>-->
+        <!--                        </li>-->
+        <!--                        <li class="page-item" th:classappend="${i == paging.pageable.pageNumber +1 } ? 'disabled'"-->
+        <!--                            th:if="${paging.pageable.pageNumber >= paging.pageable.pageNumber - 1 and paging.pageable.pageNumber <= paging.pageable.pageNumber + 1}"-->
+        <!--                            th:each=" i : ${#numbers.sequence(startPage, endPage)}">-->
+
+        <!--                            <a class="page-link" href="#"-->
+        <!--                               th:href="@{/member/list(page=${i - 1}, searchName=${param.searchName})}"-->
+        <!--                               th:text="${i}">1</a>-->
+        <!--                        </li>-->
+        <!--                        <li class="page-item" >-->
+        <!--                            <a class="page-link" th:classappend="${!paging.hasNext} ? 'disabled'"-->
+        <!--                               th:href="@{/member/list(page=${paging.pageable.pageNumber +  1 }, searchText=${param.searchText})}">다음</a>-->
+        <!--                        </li>-->
+        <!--                    </ul>-->
+        <!--                </nav>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <div class="flex" id="paging">
+            <div th:if="${!paging.isEmpty()}">
+                <!--                <ul class="pagination justify-content-center flex">-->
+                <!--                    &lt;!&ndash;                    이전 페이지&ndash;&gt;-->
+                <!--                    <li class="page-item" th:classappend="${!paging.hasPrevious()} ? 'disabled'">-->
+                <!--                        <a class="page-link"-->
+                <!--                           th:href="@{|?page=${paging.getNumber()-1}|}">-->
+                <!--                            <span>이전</span>-->
+                <!--                        </a>-->
+                <!--                    </li>-->
+                <!--                    &lt;!&ndash;                    검색된 페이지 루프 돌리기&ndash;&gt;-->
+                <!--                    <li th:each="page: ${#numbers.sequence(0, paging.getTotalPages() -1)}"-->
+                <!--                        th:if="${page >= paging.getNumber()-1 and page <= paging.getNumber()+1}"-->
+                <!--                        th:class="${page == paging.getNumber()+1} ? 'active'"-->
+                <!--                        class="page-item">-->
+                <!--                        <a th:text="${page+1}" class="page-link" th:href="@{|?page=${page}|}"></a>-->
+                <!--                        &lt;!&ndash;                    다음페이지.&ndash;&gt;-->
+                <!--                    <li class="page-item" th:if="${paging.hasNext()}">-->
+                <!--                        <a class="page-link" th:href="@{|?page=${paging.getNumber()+1}|}">-->
+                <!--                            <span>다음</span>-->
+                <!--                        </a>-->
+                <!--                    </li>-->
+                <!--                </ul>-->
+                <ul class="pagination">
+                        <span   th:if="${paging.hasPrevious()}">
+                            <a th:href="@{|?page=0&searchName=${searchName}|}" aria-label="First">
+                                <span aria-hidden="true">처음으로</span>
+                            </a>
+                        </span>
+<!--                         이전 페이지로 가기 버튼-->
+                        <span th:class="${paging.first} ? 'disabled'"
+                            th:if="${paging.hasPrevious()}">
+                            <a th:href="@{|?page=${paging.getNumber()-1}&searchName=${searchName}|}"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&lt;</span>
+                            </a>
+                        </span>
+                        <!--1,2,3,4,.. 등 페이지-->
+                        <span class="div2" th:each="page: ${#numbers.sequence(startPage, endPage)}"
+                            th:class="${page == paging.getNumber() + 1} ? 'active'">
+                            <a th:text="${page}" th:href="@{|?page=${page-1}&searchName=${searchName}|}"></a>
+                        </span>
+                        <!--다음 페이지로 -->
+                        <span th:class="${paging.last} ? 'disabled'"
+                            th:if="${paging.hasNext()}">
+                            <a th:href="@{|?page=${paging.getNumber()+1}&searchName=${searchName}|}"
+                               aria-label="Next">
+                                <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </span>
+                        <!--맨 마지막 페이지로 이동 -->
+                        <span   th:if="${paging.hasNext()}">
+                            <a th:href="@{|?page=${paging.getTotalPages()-1}&searchName=${searchName}|}" aria-label="Last">
+                                <span aria-hidden="true">마지막으로</span>
+                            </a>
+                        </span>
+                </ul>
+            </div>
+        </div>
+
+    </section>
+</main>
+</html>

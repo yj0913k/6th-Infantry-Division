@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+    <link rel="stylesheet" href="/css/reset.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/pay/detail-pay.css">
+
+</head>
+<body>
+
+<main>
+    <div class="detail-pay-wrap">
+        <div class="flex between">
+            <div class="detail-pay-name-wrap">
+
+                    <table class="detail-pay-name">
+                        <tr>
+                            <td class="detail-pay-td1">소속</td>
+                            <td colspan="3" th:text="${paydetail.department.parent.name}">1대대>1중대>1소대</td>
+                        </tr>
+                        <tr>
+                            <td class="detail-pay-td1">성명</td>
+                            <td colspan="3" th:text="${paydetail.name}" >홍길동</td>
+                        </tr>
+                        <tr>
+                            <td class="detail-pay-td1">군번</td>
+                            <td class="tdwidth" th:text="${paydetail.Number}" >1</td>
+                            <td class="detail-pay-td1">계급</td>
+                            <td th:text="${paydetail.position}">소위</td>
+                        </tr>
+
+                        <tr>
+                            <td class="detail-pay-td1">메일주소</td>
+                            <td colspan="3" th:text="${paydetail.email}"  >test@test.com</td>
+                        </tr>
+
+                    </table>
+
+            </div>
+            <div class="pay-logo">
+                <div class="pay-logoimg">
+                    <img alt="" src="/assets/images/6th.png">
+                    <p>노고에 감사드립니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pay-wrap">
+            <table class="pay">
+                <tr>
+                    <td class="pay-color" colspan="6">지급내역</td>
+                </tr>
+                <tr>
+                    <td>기본급</td>
+                    <td>초과근무수당</td>
+                    <td>당직수당</td>
+                    <td>연차수당</td>
+                </tr>
+                <tr class="pay-tr-right">
+                    <td id="basePay" th:text="${paydetail.totalBasePay}"></td>
+                    <td id="overPay" th:text="${paydetail.totalOverPay}">0</td>
+                    <td id="nightPay" th:text="${paydetail.totalNightPay}">0</td>
+                    <td id="annulPay" th:text="${paydetail.totalAnnualPay}">0</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="pay-color" colspan="2">지급액계</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td colspan="2" th:text="${paydetail.totalTotalPay}">2,820,000</td>
+                </tr>
+            </table>
+        </div>
+        <div>
+        </div>
+        <div>
+
+        </div>
+    </div>
+    <button id="searchPay" type="button">취소</button>
+
+</main>
+</body>
+</html>

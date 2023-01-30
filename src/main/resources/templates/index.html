@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/clock.css">
+    <script src="/js/clock.js"></script>
+
+    <link rel="stylesheet" href="/css/attendance/my-attendance02.css"><!-- my-attendance css링크 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+    <!-- flip clock -->
+
+    <!-- flip clock -->
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/assets/js/weather.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
+    <script src="/js/chat.js"></script>
+    <link rel="stylesheet" href="/css/commons/common.css">
+    <link rel="stylesheet" href="/css/commons/chat-bot.css">
+</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+<main>
+
+    <aside id="chat-bot">
+        <h1>챗봇</h1>
+        <div class="wrap">
+            <button type="button" id="btn-chat-open" onclick="openChat()" class="bot-btn"></button>
+            <th:block th:insert="~{chatbot/chat-bot::#chat-disp}" />
+        </div>
+    </aside>
+
+    <!-- <script th:inline="javascript">
+    const clock = document.querySelector("#clock")
+
+    function getClock() {
+        const date = new Date();
+        const hours = String(date.getHours()).padStart(2, "0");
+        const min = String(date.getMinutes()).padStart(2, "0");
+        const sec = String(date.getSeconds()).padStart(2, "0");
+        clock.innerText = `${hours}:${min}:${sec}`;
+    }
+
+    getClock();
+    //setInterval(getClock, 1000);
+
+    setTimeout(function run() { getClock(); setTimeout(run, 0); }, 1000);
+
+
+    </script>  -->
+    <div class="wrap">
+        <div class="clock-wrap">
+            <div class="korea">
+                <img src="/assets/images/korea.png">
+            </div>
+            <div id="clockContainer">
+                <div id="hour"></div>
+                <div id="minute"></div>
+                <div id="second"></div>
+            </div>
+            <div class="sinzo">
+                <img src="/assets/images/sinzo.jpg">
+            </div>
+        </div>
+        <div class="musago flex">
+            <h5> 현재 온도: <span id="temperature-celcius"></span></h5>
+            <h5>습도: <span id='humidity'></span></h5>
+            <span>무사고:</span>
+            <h2 id="remain-time"></h2>
+            <script src="/assets/js/index.js"></script>
+        </div>
+        <div class="flex">
+            <div class="id-card">
+
+                <ul>
+                    <div class="userImg flex">
+                        <li class="images"
+                            th:style="|background-image: url('${#authentication.principal.imgs}');|"></li>
+                    </div>
+
+                    <li class="flex">
+                        <div class="rankImg" th:style="|background-image: url('${#authentication.principal.rankImg}');|">
+                        </div>
+                        <div>
+                            <div>
+                                <span sec:authentication="principal.department.parent.parent.parent.name">1대대>1중대>1소대</span>>
+                                <span sec:authentication="principal.department.parent.parent.name">1대대>1중대>1소대</span>>
+                                <span sec:authentication="principal.department.parent.name">1대대>1중대>1소대</span>>
+                                <span sec:authentication="principal.department.name">1대대>1중대>1소대</span>
+                            </div>
+                            <span th:text="${#authentication.principal.name}"></span>
+                            <span th:text="${#authentication.principal.rank}"></span>
+                            <div th:text="${#authentication.principal.email}"></div>
+                            <div sec:authorize="isAuthenticated()"><a href="/logout">로그아웃</a></div>
+                        </div>
+                    </li>
+                </ul>
+                <p id="working-time">
+                    <span>0시간0분0초</span>
+                </p>
+                <th:block th:insert="~{attendance/my-attendance :: Attendance}"/>
+            </div>
+            <div class="calinder">
+                <th:block th:insert="~{attendance/attendance :: GetCalendar}"/>
+            </div>
+            <div style="margin-left: 30px;">
+                <div class="gongji">
+                    <h2>
+                        공지사항
+                    </h2>
+                    <div class="tb-wrap">
+                        <table class="gj-tb">
+                            <tr>
+                                <td>글번호</td>
+                                <td>제목</td>
+                                <td>글쓴이</td>
+                                <td>작성일</td>
+                            </tr>
+                            <tr th:each="list:${list}">
+                                <td th:text="${list.no}">글번호</td>
+                                <td class="gj-title"><a th:href="|/detail/${list.no}|" th:text="${list.title}"></a></td>
+                                <td th:text="${list.writer}">글쓴이</td>
+                                <td class="date" th:text="${#temporals.format(list.createdDate, 'yyyy-MM-dd')}">
+                                    [[${list.createdDate}]]
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="gongji department" style="margin-top: 30px"> <!-- 공지가 아니라 조직도의 내용이다. -->
+                    <h2>
+                        조직도
+                    </h2>
+                    <div class="tb-wrap">
+                        <table class="gj-tb">
+                            <tr>
+                                <td>계급</td>
+                                <td>성명</td>
+                                <td>소속</td>
+                                <td>연락처</td>
+                            </tr>
+                            <tr th:each="dto:${DepartmentViewlist}">
+                                <td th:text="${dto.rankPosition}">계급</td>
+                                <td th:text="${dto.name}">성명</td>
+                                <td>
+                                    <a th:href="|/common/category/${dto.department.parent.parent.parent.no}/goods|">[[${dto.department.parent.parent.parent.name}]] </a>
+                                    <span th:if="${dto.department.parent.parent.name!=''}">></span>
+
+                                    <a th:href="|/common/category/${dto.department.parent.parent.no}/goods|">[[${dto.department.parent.parent.name}]]</a>
+                                    <span th:if="${dto.department.parent.name!=''}">></span>
+
+                                    <a th:href="|/common/category/${dto.department.parent.no}/goods|">[[${dto.department.parent.name}]]</a>
+                                    <span th:if="${dto.department.name!=''}">></span>
+
+                                    <a th:href="|/common/category/${dto.department.no}/goods|">[[${dto.department.name}]]</a>
+                                </td>
+                                <td th:text="${dto.phone}">번호</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="flex">
+            <div class="work">
+
+                <style>
+                    #calendar-container {
+                        padding-left: 0px;
+                        padding-right: 0px;
+                </style>
+
+
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+<a href="/user/login">login</a>
+</html>

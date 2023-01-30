@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/member/moveMember.css"/>
+    <script type="text/javascript">
+        $(function () {
+            $("#search").click(function () {
+                var no = $(this).siblings(".number").val();
+                console.log(no);
+                $("#changeNum").val(no);
+
+                $.ajax({
+                    url: `/member/move/${no}`,
+                    type: "GET",							//공백제거
+                    //입력된 값의 변수이름:입력창.변수.공백제거
+                    success: function (result) {
+                        console.log(result);
+                        $("#position").val(result);
+
+
+                    }
+                });
+
+            });
+            $("#regMove").click(function () {
+
+                    var movemove = $("#moveForm").serialize();
+
+                    $.ajax({
+                        url: '/member/moveMember/',
+                        type: "POST",
+                        data: movemove,
+                        dataType: 'json',
+                        error: function () {
+                            alert(error);
+                        },
+                        success: function (json) {
+                            alert(json)
+                        }
+                    })
+                }
+            )
+        });
+
+
+    </script>
+</head>
+<main>
+    <section id="memberMove">
+        <h2>인사발령목록</h2>
+        <div class="flex" id="memberMoveDiv">
+            <div style="flex: 0.2;"></div>
+            <div style="flex: 0.7;" class="flex">
+                <!--                카테고리 select로 구현-->
+                <div>검색분류</div>
+                <div class="cate">
+                    <select name="cate">
+                        <option value="">검색분류</option>
+                        <option value="성명">성명</option>
+                        <optgroup label="군번">
+                            <option value="간부">간부</option>
+                            <option value="병사">병사</option>
+                        </optgroup>
+                        <option value="소속">소속</option>
+                    </select>
+                </div>
+            </div>
+            <div style="flex: 0.7;" class="flex">
+                <div>발령구분</div>
+                <div class="cate">
+                    <select name="cate">
+                        <option value="">발령구분</option>
+                        <option value="진급">진급</option>
+                        <option value="부대이동">부대이동</option>
+                    </select>
+                </div>
+            </div>
+            <div style="flex: 0.5;"><input type="text" style="width:150px; height:21px;" ; placeholder="검색어"></div>
+            <div class="search flex" style="flex: 0.2;">
+                <!--                                검색 아이콘 수정ing-->
+                <img src="/assets/images/bx-search-alt-2.svg" style="width: 21px; height: 21px; filter:invert(100%)">
+                <button type="submit">검색</button>
+            </div>
+            <div style="flex: 0.2;"></div>
+        </div>
+    </section>
+    <section id="list">
+        <table>
+            <thead>
+            <tr>
+                <th>No</th>
+                <th>발령구분</th>
+                <th>군번</th>
+                <th>성명</th>
+                <th>발령내용</th>
+                <th>비고</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <!--                추후 db연결시 편하게 하려고 만들어 놓음-->
+                <!--                <td>군번</td>-->
+                <!--                <td>성명</td>-->
+                <!--                <td>계급</td>-->
+                <!--                <td>소속</td>-->
+                <!--                <td>입대일</td>-->
+                <!--                <td>핸드폰</td>-->
+                <!--                <td>E-mail</td>-->
+                <td>1</td>
+                <td>진급</td>
+                <td>75-987232</td>
+                <td>홍길동</td>
+                <td>중장->대장</td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <!--    인사발령 등록 페이지. role이 admin일 경우에만 보이도록 설정 예정-->
+    <section id="memberMoveAdmin">
+        <h2>인사발령등록</h2>
+        <div class="flex" id="memberMoveAdminDiv">
+
+            <div>
+                발령인원(군번)
+                <input type="text" class="number" id="number" name="number" placeholder=군번>
+                <button id="search">검색</button>
+            </div>
+            <div>
+                발령유형
+                <label><input type="radio" name="move" value="promotion"> 진급</label>
+                <label><input type="radio" name="move" value="moveDepartment"> 부대이동</label>
+            </div>
+            <!--                로그인 한 객체의 계급을 가져온다.-->
+            <div>
+                <!--                    <span th:text=""></span>-->
+                <input type="text" id="position" disabled/>
+
+            </div>
+            <form method="POST" action="/member/" id="moveForm">
+                <div>
+                    <input type="hidden" id="changeNum" name="number">
+                    <select name="position">
+                        <option><a href="#">계급</a></option>
+                        <option th:each="dto : ${rList}" th:value="${dto.position}" th:text="${dto.position}">대장
+                        </option>
+                    </select>
+                </div>
+                <div>
+                    <button id="regMove" type="button">등록</button>
+                </div>
+            </form>
+        </div>
+        <div><h5>진급시 : 진급 전 계급 -> 진급 후 계급 &nbsp;&nbsp;&nbsp; 예)이등병->일등병</h5>
+            <h5>부대이동시 : 소속부대 -> 발령부대 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 예) 1사단 2중대 > 6사단 3중대 </h5></div>
+    </section>
+</main>
+</html>

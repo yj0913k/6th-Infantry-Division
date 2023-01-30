@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+		<tr th:each="dto:${Attendancelist}"> 
+			<td th:text = "${dto.employee.department.parent.parent.parent.name}">대대</td>
+			<td th:text = "${dto.employee.name}">이름</td>
+			<td th:text = "${dto.attDate}">날짜</td> <!--  -->
+			<td th:text = "${dto.status}">출근? 휴근?</td>
+			<td th:text = "${dto.goWorkTime}">출근시간</td> <!--  -->						
+			<td th:text = "${dto.leaveWorkTime}">퇴근시간</td> <!--  -->					
+			<td th:text = "${dto.overTime}">초과근무시간</td>
+			<td th:text = "${dto.watchDuty}">당직유무</td> 
+		 </tr>
+</html>

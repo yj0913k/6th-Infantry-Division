@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+	  th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/document/document.css">
+</head>
+<body>
+<main>
+	<div class="document-wrap">
+		<h2>문서결재요청</h2>
+		<form action="/document" method="post">
+
+			<table class="document-header">
+				<tr>
+					<td class="document-header-wid table-col"> 문서번호</td>
+					<td><input name="docNo" type="text" placeholder="문서번호"></td>
+					<td class="document-header-wid table-col">신청일자</td>
+					<td>2023.01.05</td>
+				</tr>
+				<tr sec:authorize="isAuthenticated()">
+					<td class="document-header-wid table-col">신청자</td>
+					<td sec:authentication="principal.name">홍길동</td>
+					<td class="table-col">신청부서</td>
+					<td>
+					<span sec:authentication="principal.department.parent.parent.parent.name">1대대>1중대>1소대</span>>
+					<span sec:authentication="principal.department.parent.parent.name">1대대>1중대>1소대</span>>
+					<span sec:authentication="principal.department.parent.name">1대대>1중대>1소대</span>>
+					<span sec:authentication="principal.department.name">1대대>1중대>1소대</span>
+					</td>
+					
+
+				</tr>
+				<tr>
+					<td class="table-col" >문서제목</td>
+					<td colspan="3"><input type="text" name="docTitle"></td>
+				</tr>
+
+			</table>
+			<table class="document-body">
+				<tr>
+					<td class="document-body-wid table-col">서류종류</td>
+					<td colspan="3"><select name="letter">
+						<option>휴가신청서</option>
+						<option>건의사항</option>
+						<option>마음의편지</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td class="table-col content" rowspan="2">제출사유</td>
+					<td colspan="3"><textarea rows="10" cols="" name="content"></textarea></td>
+				</tr>
+			</table>
+			<div class="btn-approval-wrap">
+				<button class="btn-approval">결재요청</button>
+			</div>
+		</form>
+	</div>
+</main>
+</body>
+</html>

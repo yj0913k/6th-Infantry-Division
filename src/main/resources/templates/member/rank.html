@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/member/rank.css"/>
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+            };
+        }, true);
+
+
+        function gimgChanged(el) {
+            var fileData = $(el)[0].files[0];
+            console.log(fileData);
+
+            var formData = new FormData()
+            formData.append('gimg', fileData);
+
+            $.ajax({
+                url: "/admin/temp-upload",
+                type: "post",
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (map) { //서버에 업로드이후 url을 리턴-> 파라미터에 전달
+                    console.log(map);
+
+                    $(el).siblings(".img").css("background-image", "url(" + map.url + ")");
+                    $(el).siblings(".newName").val(map.newName);
+                    $(el).siblings(".orgName").val(map.orgName);
+
+                }
+            });
+        }
+    </script>
+</head>
+<main>
+    <form action="/rankInsert" method="post">
+        <section id="base">
+<!--            상위 div에 flex 적용된 경우 하위 div에 flex: @ 값 주면 입력한 비율대로 정리됩니다.-->
+            <div class="flex">
+                <div style="flex: 1">
+                    <div>
+                        <label class="img" for="defimg">+</label>
+                        <input id="defimg" class="gimg" type="file" name="gimg" onchange="gimgChanged(this)">
+                        <input type="hidden" class="newName" name="newName">
+                        <input type="hidden" class="orgName" name="orgName">
+                    </div>
+                </div>
+                <div style="flex: 1.5">
+                    <ul>
+                        <li>
+                            <label for="position">계급</label>
+                            <input class="box-style-common" name="position" type="text" id="position" placeholder="계급">
+                        </li>
+                        <li>
+                            <label for="basePay">기본급</label>
+                            <input class="box-style-common" name="basePay" type="text" id="basePay" placeholder="기본급">
+                        </li>
+                        <li>
+                            <label for="night_duty_pay">당직급여</label>
+                            <input class="box-style-common" name="nightPay" type="text" id="night_duty_pay" placeholder="당직급여">
+                        </li>
+                        <li>
+                            <label for="overtime_pay">초과근무수당</label>
+                            <input class="box-style-common" name="overPay" type="text" id="overtime_pay" placeholder="초과근무">
+                        </li>
+                        <li>
+                            <label for="annual_pay">연차수당</label>
+                            <input class="box-style-common" name="annualPay" type="text" id="annual_pay" placeholder="연차수당">
+                        </li>
+                        <li>
+                            <label for="vacation">연차일수</label>
+                            <input class="box-style-common" name="annualDay" type="text" id="vacation" placeholder="연차일수">
+                        </li>
+                        <li>
+                       		<button class="btn-style-common" type="submit">등록</button>
+                        </li>
+
+
+                    </ul>
+
+                </div>
+                <div style="flex: 0.6">
+                    <div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </form>
+
+</main>
+</html>

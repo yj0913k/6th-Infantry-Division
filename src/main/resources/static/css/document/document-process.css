@@ -1,0 +1,38 @@
+@charset "UTF-8";
+main .process-wrap{
+	width:1000px;
+	margin-left: 20px;
+	margin:0 auto;
+}
+main .process-wrap h2{
+	font-size:20px;
+	text-align: center;
+	margin-bottom: 20px;
+}
+main .process-wrap .process{
+	width:100%;
+}
+
+main .process-wrap .process tr:first-child{
+	border-top:2px solid #3e782c;
+	border-bottom:2px solid #3e782c;
+	height: 50px;
+}
+main .process-wrap .process tr td{
+	padding: 5px;
+	text-align: center;
+}
+main .process-wrap .process tr:nth-child(2n){
+	background-color: #eee;
+}
+main .process-wrap .process tr td button{
+	width:100%;
+	padding:2px 5px;
+	border:1px solid #eee;
+	box-shadow: 2px 2px 2px gray;
+	cursor: pointer;
+	background-color: #fff;
+}
+main .process-wrap .process-wid{
+	width: 250px;
+}

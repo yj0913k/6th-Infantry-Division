@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      th:fragment="commLayout(head, main)">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6사단</title>
+    <!-- Box Icons -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="shortcut icon" href="/assets/images/6th.png" type="image/x-icon">
+
+    <!--    Styles-->
+    <link rel="stylesheet" href="/css/style.css"/>
+
+    <th:block th:replace="${head}"/>
+
+
+    <link rel="stylesheet" href="/css/organization/header.css"/>
+
+
+
+
+</head>
+<!--Logo-->
+
+<body>
+
+<div class="sidebar close">
+    <span class="logo-box" >
+        <i><img src="/assets/images/6th.png" style="width: 45px; height: 45px"></i>
+        <div class="logo-name">
+            <a href="/">6사단</a>
+        </div>
+    </span>
+    <ul class="sidebar-list">
+        <!-- ---------Non Dropdown List Item------------- -->
+        <li class="dropdown">
+            <div class="title">
+                <a href="#" class="link">
+                    <i class='bx bx-volume-full' ></i>
+                    <span class="name">공지사항</span>
+                </a>
+                <i class='bx bxs-chevron-down'></i>
+            </div>
+            <div class="submenu">
+                <a href="#" class="link submenu-title">공지사항</a>
+                <a href="/write" class="link">글쓰기</a>
+                <a href="/list" class="link">공지사항</a>
+                <!--                submenu links here-->
+            </div>
+        </li>
+        <!-- --------- Dropdown List Item------------- -->
+        <!-- -------- Non Dropdown List Item ------- -->
+        <li  class="dropdown">
+            <div class="title">
+                <a href="#" class="link">
+                    <i class='bx bx-sitemap'></i>
+                    <!-- 여기에 코드를 다른걸로 바꾸었습니다!! -->
+
+                    <span class="name">조직도</span>
+                </a>
+                <i class='bx  bxs-chevron-down'></i>
+            </div>
+            <div class="submenu">
+                <a href="/registerOrganizationChart" class="link">조직 등록</a>
+
+
+                <nav id="nb">
+                    <div class="wrap">
+                        <ul class="flex">
+                            <li value="0" class="gnb cate">
+                                <a href="#" class="flex">
+
+                                    <span>조직도(6사단) </span>
+                                </a>
+
+                                <ul class="tree-list cate-wrap">
+
+                                    <!-- 카테고리 자동삽입 -->
+                                    <!-- 여기 원래 있던 코드를 삭제하였습니다. -->
+
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+
+
+            </div>
+        </li>
+
+
+        <!-- 아래 자바스크립트 코드는 위의 조직도 html코드에 class = "cate-wrap"에 해당하는 곳에
+        비동기 처리로 가져온 코드를 삽입하여 줍니다. .
+         -->
+
+        <script type="text/javascript">
+
+
+            $(function(){
+                createCategory($(".gnb"));
+            });
+
+            function createCategory(target){
+                var parentNo=$(target).attr("value");
+                console.log("pno:"+parentNo);
+                $.ajax({
+                    url:`/common/layout/categorys/${parentNo}`,
+                    /* 컨트롤러 폴더에 organizationChartController에 해당 URL매핑이 있습니다. */
+                    //이는 결국 ol-category.html을 호출합니다. 그리고 거기서 타임리프가 반복되면서 생성된 코드들이 아래의 class="cate-wrap"인 요소에 추가가 됩니다.
+                    //
+
+                    success:function(olTag){
+                        $(target).children(".cate-wrap").html(olTag);
+
+                        var sub=$(target).find(".cate");
+                        $.each(sub, subCategory);
+                    }
+                });
+            }
+            function subCategory(){
+                //console.log($(this).attr("value"));
+                createCategory($(this)); //여기서부터 다시 위의 함수로 되돌아간다.
+                //즉 재귀적으로 함수가 호출되면서 "cate-wrap" 요소에 html코드가 추가가 되는 형식이다.
+            }
+        </script>
+        <li class="dropdown">
+            <div class="title">
+                <a href="#" class="link">
+                    <i class='bx bxs-id-card' ></i>
+                    <span class="name">사원</span>
+                </a>
+                <i class='bx bxs-chevron-down'></i>
+            </div>
+            <div class="submenu">
+                <a href="#" class="link submenu-title">사원</a>
+                <a href="/member/list" class="link">사원목록</a>
+                <a href="/member/registration" class="link">사원등록</a>
+                <a href="/member/rankRegistration" class="link">계급등록</a>
+                <a href="/member/move" class="link">인사발령</a>
+
+            </div>
+        </li>
+        <!-- ---------Non Dropdown List Item------------- -->
+        <li class="dropdown">
+            <div class="title">
+                <a href="#" class="link">
+                    <i class='bx bx-coin-stack' ></i>
+                    <span class="name">급여</span>
+                </a>
+                <i class='bx bxs-chevron-down'></i>
+            </div>
+            <div class="submenu">
+                <a href="#" class="link submenu-title">급여</a>
+                <a href="/pay" class="link">급여지급</a>
+                <a href="/pay/detail" class="link">급여명세서</a>
+                <!--                submenu links here-->
+            </div>
+        </li>
+        <!-- ---------Non Dropdown List Item------------- -->
+        <li class="dropdown">
+            <div class="title">
+                <a  class="link">
+                    <i class='bx bx-run'></i>
+                    <span class="name">근태</span>
+                </a>
+                <i class='bx bxs-chevron-down'></i>
+            </div>
+            <div class="submenu">
+                <a class="link submenu-title">근태</a>
+                <a href="/my-attendance" class="link">출/퇴근</a>
+                <a href="/attendance" class="link">일자</a>
+                <!--                submenu links here-->
+            </div>
+        </li> <!-- ---------Non Dropdown List Item------------- -->
+        <li class="dropdown">
+            <div class="title">
+                <a href="#" class="link">
+                    <i class='bx bx-copy-alt' ></i>
+                    <span class="name">문서결재</span>
+                </a>
+                <i class='bx bxs-chevron-down'></i>
+            </div>
+            <div class="submenu">
+                <a class="link submenu-title">전자문서결재</a>
+                <a href="/document" class="link">결재요청함</a>
+                <a href="/document/stand" class="link" sec:authorize="hasRole('ADMIN')" >결재대기함</a>
+                <a href="/document/process" class="link">결제진행현황</a>
+            </div>
+        </li>
+        <!-- Naver API -->
+        <li class="dropdown">
+            <div class="title">
+                <a href="#" class="link">
+                    <i class='bx'><img alt="api" src="/assets/images/api.png" style="width:20px; height:20px;"></i>
+                    <span class="name">API</span>
+                </a>
+                <i class='bx bxs-chevron-down'></i>
+            </div>
+            <div class="submenu">
+                <form action="https://auth.worksmobile.com/oauth2/v2.0/authorize" method="get">
+                    <input type="hidden" name="client_id" value="W31yjyhwPf9S1kvFhWPR">
+                    <input type="hidden" name="redirect_uri" value="http://localhost:8080/naver/oauth2">
+                    <input type="hidden" name="scope" value="directory,directory.read,orgunit,orgunit.read">
+                    <input type="hidden" name="response_type" value="code">
+                    <input type="hidden" name="state" value="test">
+                    <button class="api-btn" style="background-color: #1e1e1e; color:#fff; font-size:19px; border:none;">조직인증</button>
+                </form>
+            </div>
+        </li>
+        <!-- Naver API -->
+    </ul>
+</div>
+<!--    //////////////Home Section////////////////-->
+
+<div class="home">
+
+    <div class="toggle-sidebar" id="toggle-sidebar">
+        <i class='bx bx-menu'></i>
+        <div class="text">Toggle</div>
+    </div>
+    <th:block th:replace="${main}"/>
+
+    <script type="text/javascript">
+
+        const listItems = document.querySelectorAll(".sidebar-list li");
+
+        listItems.forEach((item) => {
+            item.addEventListener("click", () => {
+                let isActive = item.classList.contains("active");
+
+                listItems.forEach((el) => {
+                    el.classList.remove("active");
+                });
+
+                if (isActive) item.classList.remove("active");
+                else item.classList.add("active");
+            });
+        });
+
+        const toggleSidebar = document.querySelector(".toggle-sidebar");
+        const logo = document.querySelector(".logo-box");
+        const sidebar = document.querySelector(".sidebar");
+
+        toggleSidebar.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+        });
+
+        logo.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+        });
+
+    </script>
+</div>
+</body>
+
+</html>

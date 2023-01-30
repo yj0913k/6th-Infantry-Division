@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/pay/payslip.css">
+</head>
+<body>
+	<main>
+		<div class="stand-wrap">
+			<div class="search">
+				<form action="/pay/search">
+					<select name="keyword" required>
+						<option disabled selected>지급월 선택</option>
+						<option>2023-01</option>
+						<option>2023-02</option>
+						<option>2023-03</option>
+						<option>2023-04</option>
+						<option>2023-05</option>
+						<option>2023-06</option>
+						<option>2023-07</option>
+						<option>2023-08</option>
+						<option>2023-09</option>
+						<option>2023-10</option>
+						<option>2023-11</option>
+						<option>2023-12</option>
+					</select>
+					
+					<button type="submit">검색</button>
+				</form>
+			</div>
+			<h2>급여명세서</h2>
+			<table class="stand">
+				<tr>
+					<td>번호</td>
+					<td class="stand-width">지급일</td>
+					<td>계급</td>
+					<td>이름</td>
+					<td>지급총액</td>
+				</tr>
+				<tr th:each="slip : ${searchList}">
+					<td th:text="${slip.no}">이름</td>
+					<td><a th:href="|/payslip/detail/${slip.no}|"  th:text="${slip.account}">2023년 1월 명세서</a></td>
+					<td  th:text="${slip.position}">1대대>1중대>1소대</td>
+					<td  th:text="${slip.name}">2023-01-18</td>
+					<td  th:text="${slip.totalTotalPay}">2000000</td>
+				</tr>
+
+
+			</table>
+		</div>
+	</main>
+</body>
+</html>

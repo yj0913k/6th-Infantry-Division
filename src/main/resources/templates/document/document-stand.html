@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/document/document-stand.css">
+</head>
+<body>
+	<main>
+		<div class="stand-wrap">
+			<div class="search">
+				<form action="/document/search">
+					<select name="keyword" required>
+						<option disabled selected>서류종류 선택</option>
+						<option>휴가신청서</option>
+						<option>건의사항</option>
+						<option>마음의편지</option>
+					</select>
+					
+					<button type="submit">검색</button>
+				</form>
+			</div>
+			<h2>결재대기함</h2>
+			<table class="stand">
+				<tr>
+					<td>문서번호</td>
+					<td class="stand-width">문서제목</td>
+					<td>서류종류</td>
+					<td>신청자</td>
+					<td>신청부서</td>
+					<td>신청일</td>
+					<td>상태현황</td>
+				</tr>
+				<tr th:each = "list : ${stand}">
+					<td th:text="${list.no}">1</td>
+					<td >
+						<a th:href="|/document/stand/detail/${list.no}|" th:text="${list.title}" >휴가신청</a></td>
+					<td th:text="${list.letter}"></td>
+					<td th:text="${list.name}">홍길동</td>
+					<td th:text="${list.department}">1대대>1중대>1소대</td>
+					
+					<td  th:text="${list.docCreatedDate}">2023-01-05</td>
+					<td th:text="${list.status}">2023-01-05</td>
+				</tr>
+
+			</table>
+		</div>
+	</main>
+</body>
+</html>

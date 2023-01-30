@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+
+	<select id="selectBox3"  onchange="ModalEmployeeSelect()">  
+			<option value="" selected disabled>대원 선택</option>  
+			<option th:each = "dto : ${employeeList}" th:value = "${dto.no}" th:text="${dto.name}">조회할 대원 셀렉트박스</option>
+	</select> 
+
+</html>

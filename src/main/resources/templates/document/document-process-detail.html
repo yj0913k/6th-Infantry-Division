@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+<head>
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/document/document.css">
+
+
+
+
+
+
+</head>
+
+<script type="text/javascript">
+
+	function fnResve() {
+
+		$("#listForm").attr("action", "document/stand/detail/up/${detail.no}").submit();
+
+	}
+</script>
+
+
+
+<body>
+<main>
+	<div class="document-wrap">
+		<h2>문서결재요청</h2>
+		<form th:action="|/document/stand/detail/approval/${detail.no}|" method="post" id="dddd">
+
+			<table class="document-header">
+				<tr>
+					<td class="document-header-wid table-col" >문서번호</td>
+					<td th:text="${detail.no}">자동채번</td>
+					<td class="document-header-wid table-col" >신청일자</td>
+					<td th:text="${detail.docCreatedDate}">2023.01.05</td>
+				</tr>
+				<tr>
+					<td class="document-header-wid table-col">신청자</td>
+					<td th:text="${detail.name}">홍길동</td>
+					<td class="table-col">신청부서</td>
+					<td th:text="${detail.department}">1대대>1중대>1소대</td>
+				</tr>
+				<!--	<tr>
+						<td class="table-col">참조자</td>
+						<td  colspan="3">대대장</td>
+					</tr>-->
+				<tr>
+					<td class="table-col">문서제목</td>
+					<td colspan="3" th:text="${detail.title}">휴가신청</td>
+				</tr>
+
+			</table>
+			<table class="document-body">
+				<tr>
+                    <td class="document-body-wid table-col">서류종류</td>
+                    <td colspan="3" th:text="${detail.letter}">휴가신청서</td>
+                </tr>
+				<tr>
+					<td class="table-col content" rowspan="2">제출사유</td>
+					<td colspan="3" th:text="${detail.content}">쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 쉬고싶다 </td>
+				</tr>
+			</table>
+		</form>
+	</div> 
+	
+</main>
+</body>
+</html>

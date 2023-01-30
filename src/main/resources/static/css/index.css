@@ -1,0 +1,159 @@
+@charset "UTF-8";
+main>.wrap{
+	margin-left: 20px;
+	width: 1560px;
+	margin:0 auto;
+}
+.id-card{
+	border:3px solid #3e782c;
+	width: 300px;
+	height: 540px;
+	border-radius: 5px;
+}
+.calinder{
+	border:3px solid #3e782c;
+	width: 800px;
+	height:540px;
+	margin-left: 30px;
+	border-radius: 5px;
+}
+.jojik{
+	width: 400px;
+	height: 275px;
+	margin-bottom: 30px;
+}
+.year{
+	width: 400px;
+	height: 275px;
+}
+
+.work{
+	margin-top:30px;
+	width: 500px;
+	/* border:1px solid red; */
+	height: 252.42px;
+}
+.gongji{
+	width: 400px;
+	border:3px solid #3e782c;
+	height: 252.42px;
+	position: relative;
+	border-radius: 5px;
+}
+.gongji h2{
+	font-size: 16px;
+	position: absolute;
+	background: #fff;
+	top: -13px;
+	left: 10px;
+	padding: 0 5px;
+}
+.rankImg {
+	width: 75px;
+	height: 75px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.musago{
+	position: absolute;
+	right: 30px;
+	top:30px;
+	margin-right: 100px;
+}
+.musago span{line-height: 35px;}
+.gongji .tb-wrap{
+	width:calc(100% - 20px);
+	height: 201px;
+	overflow: hidden;
+	margin: 10px;
+	margin-top: 17px;
+}
+.gongji .gj-tb{
+	width: 100%;
+	height:180px;
+
+}
+.gongji .gj-tb tr:first-child{
+	border-top:2px solid #3e782c;
+	border-bottom:2px solid #3e782c;
+}
+.gongji .gj-tb tr:nth-child(2n){
+	background-color: #eee;
+}
+.gongji .gj-tb tr:first-child td{
+	text-align: center;
+}
+.gongji .gj-tb tr td{
+	text-align: center;
+}
+.gongji .gj-tb tr .gj-title{
+	width: 100px;
+	text-align: left;
+}
+.gongji .gj-tb tr .gj-title a{
+	display:block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 150px;
+}
+
+.gongji.department .gj-tb tr .gj-title a{
+	display:inline;
+}
+
+.wrap-clock{
+	color:#3e782c;
+	font-size: 40px;
+	font-weight: 500;
+	padding:20px 0;
+}
+
+.wrap-clock{
+	text-align: center;
+}
+.userImg{
+	width: 300px;
+	height: 200px;
+	padding: 10px 0;
+}
+.userImg>li{
+	margin: 0 auto;
+}
+
+.images {
+	width: 100%;
+	height: 100%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+
+}
+.korea{
+	width: 180px;
+	height: 150px;
+	position: absolute;
+	top:0;
+	left: 0;
+}
+.korea>img{
+	width: 100%;
+	height: 100%;
+}
+.sinzo{
+	width: 180px;
+	height: 150px;
+	position: absolute;
+	top:0;
+	right: 0;
+}
+.sinzo>img{
+	width: 100%;
+	height: 100%;
+}
+.clock-wrap{
+	position: relative;
+	height: 150px;
+	margin-bottom: 20px;
+}

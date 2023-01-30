@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+ <main>
+	 <form>
+		 <div class="wrap">
+			 <div class="flex flex-wrap pay-wrap" id="view-`de`tail">
+				 <div class="detail-pay">
+					 <h2>
+						 개인정보
+					 </h2>
+					 <ul class="pay">
+						 <li class="pay-write">
+							 <span class="pay-color">군번</span><span th:text="${detail.Number}">&nbsp;</span>
+						 </li>
+						 <li class="flex pay-write">
+							 <span class="pay-color">이름</span><span th:text="${detail.name}"></span>
+						 </li>
+						 <li class="flex pay-write">
+							 <span class="pay-color">이메일</span><span th:text="${detail.email}"></span>
+						 </li>
+						 <li class="flex pay-write">
+							 <span class="pay-color">계급</span><span th:text="${detail.rank}"></span>
+						 </li>
+						 <li class="flex pay-write">
+							 <span class="pay-color">소속</span><span th:text="${detail.department.parent.name}"></span>
+						 </li>
+						 <li class="flex pay-write">
+							 <span class="pay-color">총 초과근무 시간</span><span th:text="${total}"></span>
+						 </li>
+
+
+
+					 </ul>
+				 </div>
+
+
+				 <div class="detail-pay">
+					 <h2>
+						 급여입력
+					 </h2>
+					 <ul class="pay">
+						 <li class="pay-write">
+							 <span class="pay-color">지급일</span><span><input placeholder="지급일" type="date" name="account" ></span>
+						 </li>
+						 <li class="flex pay-write">
+							 <span class="pay-color">기본급</span><span><input type="text" placeholder="기본급 입력" th:value="${detail.basePay}" name="totalBasePay" readonly="readonly"></span>
+						 </li>
+						 <li class="flex pay-write">
+							 <span class="pay-color">당직수당</span><span><input type="text" placeholder="당직수당 입력" th:value="${detail.nightPay}" name="totalNightPay" readonly="readonly"></span>
+						 </li>
+						 <li class="flex pay-write">
+							 <span class="pay-color">추가근무수당</span><span><input type="text" placeholder="추가근무수당 입력" th:value="${detail.overPay*total}" name="totalOverPay" readonly="readonly"></span>
+						 </li>
+						 <li class="flex pay-write">
+							 <span class="pay-color">연차수당</span><span><input type="text" placeholder="연차수당 입력" th:value="${detail.annualPay}" name="totalAnnualPay" readonly="readonly"></span>
+						 </li>
+						 <li class="flex pay-write">
+							 <span class="pay-color">합계</span><span><input type="text" placeholder="합계 입력" th:value="${#numbers.formatInteger(detail.basePay+detail.nightPay+(detail.overPay*total)+detail.annualPay , '0')}" name="totalTotalPay" readonly="readonly"></span>
+						 </li>
+
+					 </ul>
+
+				 </div>
+				 <div class="base-pay">
+					 <h2>직급별 급여</h2>
+					 <div class="rank-pay-wrap">
+						 <table class="rank-pay">
+							 <tr>
+								 <td>직급</td>
+								 <td>기본급</td>
+								 <td>당직수당</td>
+								 <td>추가근무수당(시간)</td>
+								 <td>연차수당(일)</td>
+							 </tr>
+							 <tr >
+								 <td th:text="${detail.rank}"><span></span>직급</td>
+								 <td th:text="${detail.basePay}">5000000</td>
+								 <td th:text="${detail.nightPay}">5200000</td>
+								 <td th:text="${detail.overPay}">5400000</td>
+								 <td th:text="${detail.annualPay}">5500000</td>
+							 </tr>
+						 </table>
+					 </div>
+				 </div>
+
+				 <div class="date-pay">
+					 <h2>출퇴근 기록</h2>
+					 <div class="date-table-wrap">
+						 <table>
+							 <tr>
+								 <td>요일</td>
+								 <td>일자구분</td>
+								 <td>출근시각</td>
+								 <td>퇴근시각</td>
+								 <td>추가근무시간</td>
+								 <td>당직근무시간</td>
+							 </tr>
+							 <tr th:each="list:${detailattendance}">
+								 <td th:text="${#temporals.dayOfWeekName(list.attDate)}">
+								 </td>
+								 <td th:text="${list.attDate}">일자구분</td>
+								 <td th:text="${#temporals.format(list.goWorkTime,'hh:mm:ss')}">출근시각</td>
+								 <td th:text="${#temporals.format(list.leaveWorkTime,'HH:mm:ss')}">퇴근시각</td>
+								 <td th:if="${list.overTime >= 0}">
+									 <div th:text="${list.overTime}"></div>
+								 </td>
+								 <td>당직근무시간</td>
+							 </tr>
+						 </table>
+					 </div>
+					 <div>
+						 <button class="pay-save">저장하기</button>
+					 </div>
+				 </div>
+			 </div>
+		 </div>
+	 </form>
+	</main>
+</html>

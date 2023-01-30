@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}">
+
+<head>
+
+	<link rel="stylesheet" href="/css/reset.css">
+	<link rel="stylesheet" href="/css/pay/pay.css">
+
+
+	<script type="text/javascript">
+		$(function() {
+			$(".nameId").click(btnDetailClick);
+
+		});
+
+		function btnDetailClick() { //siblings 같은 위치 prev - 앞에 text =  > th:text
+			var noId=$(this).parent("td").prev().text();
+			console.log("dfsjfbwejkfewbejkfkwebfjkwbjkfwekjfbkwbefkj");
+			$.ajax({
+				url :`/pay/detail/${noId}`,
+				type : "GET",
+				success :function(resultHtml) {
+					$("#view-detail").html(resultHtml); //html 덮어쓰기
+
+					alert("페이지 뜬다.");
+				}
+			});
+
+		};
+
+	</script>
+</head>
+
+
+
+ <main>
+
+ 	<form action="/pay/save" method="post">
+		<div class="wrap">
+			<div>
+				<h2>기본정보</h2>
+				<div class="table-wrap">
+					<table class="pay-page-user">
+					
+						<tr>
+							<td>군번</td>
+							<td>이름</td>
+							<td>계급</td>
+							<td class="tb-wid">소속</td>
+						</tr>
+						<tr th:each="list:${pList}">
+						
+							<td th:text="${list.no}">1</td>
+
+							<td>
+								<button class="nameId"  type="button" th:text="${list.name}">홍길동</button>
+							</td>
+
+							<td th:text="${list.rank}">대위</td>
+							<td>
+								<span th:text="${list.department.parent.parent.parent.name}"></span>>
+                                <span th:text="${list.department.parent.parent.name}"></span>>
+                                <span th:text="${list.department.parent.name}"></span>>
+                                <span th:text="${list.department.name}"></span>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="flex flex-wrap pay-wrap" id="view-detail">
+				<div class="detail-pay">
+					<h2>
+						개인정보
+					</h2>
+					<ul class="pay">
+						<li class="pay-write">
+							<span class="pay-color">군번</span><span>&nbsp;</span>
+						</li>
+						<li class="flex pay-write">
+							<span class="pay-color">이름</span><span></span>
+						</li>
+						<li class="flex pay-write">
+							<span class="pay-color">이메일</span><span></span>
+						</li>
+						<li class="flex pay-write">
+							<span class="pay-color">계급</span><span></span>
+						</li>
+						<li class="flex pay-write">
+							<span class="pay-color">소속</span><span></span>
+						</li>
+						<li class="flex pay-write">
+							<span class="pay-color">합계</span><span></span>
+						</li>
+						
+					</ul>
+				</div>
+
+
+				<div class="detail-pay">
+					<h2>
+						급여입력
+					</h2>
+					<ul class="pay">
+						<li class="pay-write">
+							<span class="pay-color">지급일</span><span><input type="text" placeholder="지급일" ></span>
+						</li>
+						<li class="flex pay-write">
+							<span class="pay-color">기본급</span><span><input type="text" placeholder="기본급 입력" ></span>
+						</li>
+						<li class="flex pay-write">
+							<span class="pay-color">당직수당</span><span><input type="text" placeholder="당직수당 입력" ></span>
+						</li>
+						<li class="flex pay-write">
+							<span class="pay-color">추가근무수당</span><span><input type="text" placeholder="추가근무수당 입력" ></span>
+						</li>
+						<li class="flex pay-write">
+							<span class="pay-color">연차수당</span><span><input type="text" placeholder="연차수당 입력" ></span>
+						</li>
+						<li class="flex pay-write">
+							<span class="pay-color">합계</span><span><input type="text" placeholder="합계 입력" ></span>
+						</li>
+	
+					</ul>
+					
+				</div>
+				<div class="base-pay">
+					<h2>직급별 급여</h2>
+					<div class="rank-pay-wrap">
+						<table class="rank-pay">
+							<tr>
+								<td>직급</td>
+								<td>기본급</td>
+								<td>당직수당</td>
+								<td>추가근무수당(시간)</td>
+								<td>연차수당(일)</td>
+							</tr>
+							<tr th:each="dto:${list}">
+								<td th:text="${dto.position}"><span th:text="${dto.defImgUrl}"></span>직급</td>
+								<td th:text="${dto.basePay}">5000000</td>
+								<td th:text="${dto.nightPay}">5200000</td>
+								<td th:text="${dto.overPay}">5400000</td>
+								<td th:text="${dto.annualPay}">5500000</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				
+				<div class="date-pay">
+					<h2>출퇴근 기록</h2>
+					<div class="date-table-wrap">
+						<table>
+							<tr>
+								<td>요일</td>
+								<td>일자구분</td>
+								<td>출근시각</td>
+								<td>퇴근시각</td>
+								<td>추가근무시간</td>
+								<td>당직근무시간</td>
+							</tr>
+							
+						</table>
+					</div>
+					<div>
+						<button class="pay-save">저장하기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>
+	</main>
+</html>

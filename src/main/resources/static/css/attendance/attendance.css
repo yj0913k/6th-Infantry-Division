@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+
+.wrap-table{
+
+	margin:0 auto;
+	padding:30px 0;
+	width:900px;
+	
+}
+
+.wrap-btn{
+
+	position:relative;
+	height:35px;
+}
+.wrap-btn > button{
+	width:50px;
+	height:30px;
+	background-color: #363636;
+	color:#fff;
+	border-radius: 5px;
+	float:left;
+	cursor: pointer;
+}
+.wrap-btn > button{
+	margin-right:3px;
+}
+.wrap-table table thead tr{
+   background-color: #3e782c;
+   color:#fff;
+}
+
+.wrap-table table,.wrap-table tr,td,th{
+	text-align:center;
+	border:1px solid #eee;
+}
+
+/* body 스타일 */
+#calendar-container{
+
+padding-left: 25%;
+ padding-right:25%; 
+}

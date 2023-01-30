@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/commLayout :: commLayout(~{this::head}, ~{::main})}"><head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" href="/css/reset.css"/>
+  <link rel="stylesheet" href="/assets/css/member.css"/>
+</head>
+<main>
+<section id="base">
+
+<div class="flex" >
+    <div style="flex: 1"><img src="/assets/images/transform: rotate(180deg);.png" width="150px" height="150px"></div>
+    <div style="flex: 2">
+        <form>
+            <ul>
+        <li>
+            <label for="name">이름</label>
+            <input class="box-style-common" type="text" id="name" placeholder="이름">
+        </li>
+                <li>
+                    <label for="name">군번</label>
+                    <input class="box-style-common" type="text" id="serialNumber" placeholder="군번">
+                </li>
+                <li>
+                    <label for="pass-confirm">계급</label>
+                    <input class="box-style-common" type="text" id="rankNo" placeholder="계급">
+                </li>
+        <li>
+            <label for="email">이메일</label>
+            <input class="box-style-common" type="text" id="email" placeholder="이메일">
+        </li>
+        <li>
+            <label for="pass">비밀번호</label>
+            <input class="box-style-common" type="password" id="pass" placeholder="비밀번호">
+        </li>
+        <li>
+            <label for="pass-confirm">비밀번호 확인</label>
+            <input class="box-style-common" type="password" id="pass-confirm" placeholder="비밀번호 확인">
+        </li>
+
+
+        <li>
+            <label for="name">입대일</label>
+            <input class="box-style-common" type="date" id="date" placeholder="입대일">
+        </li>
+        <li>
+            <label for="name">생년월일</label>
+            <input class="box-style-common" type="date" id="birth" placeholder="생년월일">
+        </li>
+                <li>
+                    <button class="btn-style-common">간부등록</button>
+                </li>
+            </ul>
+        </form>
+    </div>
+    <div style="flex: 1.5"></div>
+    <div style="flex: 2"></div>
+</div>
+
+</section>
+<section id="address">
+
+</section>
+<section id="department">
+
+</section>
+
+</main>
+</html>
